@@ -1,0 +1,26 @@
+package test
+
+import (
+	"os"
+)
+
+type StaticImage struct {
+	// image file
+	// MIME is png or jpeg.
+	file     os.File `goro:"init"`
+	name     string
+	Category string `goro:"init,get"`
+}
+
+type staticHTML struct {
+	// html file
+	file     os.File `goro:"init"`
+	name     string  `goro:"get,set"`
+	Category string  `goro:"init,set"`
+}
+
+type Loader interface {
+	Load(path string) (string, error)
+}
+
+const DefaultPath = "./static/index.html"
