@@ -158,7 +158,7 @@ func (w Writer) buildGetter(recv string, recvType string, f Field) ast.Decl {
 	return &ast.FuncDecl{
 		Name: ast.NewIdent(fn),
 		Doc: &ast.CommentGroup{
-			List: w.buildComments(f.Comments, fn, f.Name),
+			List: w.buildGetterComments(f.Comments, fn, f.Name),
 		},
 		Type: &ast.FuncType{
 			Results: &ast.FieldList{List: results},
@@ -194,39 +194,46 @@ func setterName(name string) string {
 }
 
 func (w Writer) buildSetter(recv string, recvType string, f Field) ast.Decl {
-	results := []*ast.Field{
-		{
-			Type: &ast.BasicLit{
-				Kind:  token.STRING,
-				Value: f.Type,
-			},
-		},
-	}
 	fn := setterName(f.Name)
 	return &ast.FuncDecl{
 		Name: ast.NewIdent(fn),
 		Doc: &ast.CommentGroup{
-			List: w.buildComments(f.Comments, fn, f.Name),
+			List: []*ast.Comment{
+				{Text: fmt.Sprintf("\n// %s is setter for %s", fn, f.Name)},
+			},
 		},
 		Type: &ast.FuncType{
-			Results: &ast.FieldList{List: results},
+			Params: &ast.FieldList{
+				List: []*ast.Field{
+					{
+						Names: []*ast.Ident{
+							{Name: f.Name},
+						},
+						Type: &ast.BasicLit{
+							Kind:  token.STRING,
+							Value: f.Type,
+						},
+					},
+				},
+			},
 		},
 		Recv: &ast.FieldList{
 			List: []*ast.Field{
 				{
 					Names: []*ast.Ident{ast.NewIdent(recv)},
-					Type:  ast.NewIdent(recvType),
+					Type:  ast.NewIdent(fmt.Sprintf("*%s", recvType)),
 				},
 			},
 		},
 		Body: &ast.BlockStmt{
 			List: []ast.Stmt{
-				&ast.ReturnStmt{
-					Results: []ast.Expr{
-						&ast.SelectorExpr{
-							X:   ast.NewIdent(recv),
-							Sel: ast.NewIdent(f.Name),
-						},
+				&ast.AssignStmt{
+					Lhs: []ast.Expr{
+						ast.NewIdent(fmt.Sprintf("%s.%s", recv, f.Name)),
+					},
+					Tok: token.ASSIGN,
+					Rhs: []ast.Expr{
+						ast.NewIdent(f.Name),
 					},
 				},
 			},
@@ -234,7 +241,7 @@ func (w Writer) buildSetter(recv string, recvType string, f Field) ast.Decl {
 	}
 }
 
-func (Writer) buildComments(comments []string, funcName string, fieldName string) []*ast.Comment {
+func (Writer) buildGetterComments(comments []string, funcName string, fieldName string) []*ast.Comment {
 	var res []*ast.Comment
 	if len(comments) > 0 {
 		res = make([]*ast.Comment, len(comments))

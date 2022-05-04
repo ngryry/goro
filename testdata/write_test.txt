@@ -23,7 +23,7 @@ func (s staticHTML) Name() string {
 	return s.name
 }
 
-// SetName
-func (s staticHTML) SetName() string {
-	return s.name
+// SetName is setter for name
+func (s *staticHTML) SetName(name string) {
+	s.name = name
 }
