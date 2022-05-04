@@ -4,7 +4,7 @@ Goro (go-readonly) is a Go code generator to automate the creation of constructo
 ## Instalation
 Install `goro` tool.
 ```bash
-go install github.com/ngryry/goro@v1.0.0
+go install github.com/ngryry/goro@v0.1.0
 ```
 **Note** Please make sure `$GOPATH/bin` is in  `$PATH`. 
 
