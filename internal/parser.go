@@ -103,7 +103,7 @@ func (p Parser) parseField(f *ast.Field, structName string) []Field {
 
 				if !isPrivateField(n.Name) {
 					log.Printf("[goro]: %s in %s is public. "+
-						"Public fields don't need getter and setter.", n.Name, structName)
+						"Public fields do not require getter and setter.", n.Name, structName)
 					get = false
 					set = false
 				}
