@@ -35,7 +35,7 @@ func main() {
 	flag.Parse()
 
 	if *src == "" || *dst == "" {
-		log.Fatal("[goro]: must specify -s and -d")
+		log.Fatal("[goro]: Must specify -s and -d")
 	}
 
 	p := internal.Parser{EnabledTag: *enabledTag}
@@ -43,15 +43,15 @@ func main() {
 
 	f, err := p.Parse(*src)
 	if err != nil {
-		log.Fatalf("[goro]: failed to parse src: %s", err.Error())
+		log.Fatalf("[goro]: Failed to parse src: %s", err.Error())
 	}
 
 	if err := w.Write(f, *dst); err != nil {
-		log.Fatalf("[goro]: failed to write file: %s", err.Error())
+		log.Fatalf("[goro]: Failed to write file: %s", err.Error())
 	}
 
 	if err := format(); err != nil {
-		log.Fatalf("[goro]: failed to format file: %s", err.Error())
+		log.Fatalf("[goro]: Failed to format file: %s", err.Error())
 	}
 }
 
