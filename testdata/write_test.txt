@@ -1,0 +1,29 @@
+package test
+
+import "os"
+
+// NewStaticImage is constructor for StaticImage
+func NewStaticImage(mFile os.File, mCategory string) StaticImage {
+	return StaticImage{file: mFile, Category: mCategory}
+}
+
+// File image file
+// MIME is png or jpeg.
+func (s StaticImage) File() os.File {
+	return s.file
+}
+
+// NewStaticHTML is constructor for staticHTML
+func NewStaticHTML(mFile os.File, mCategory string) staticHTML {
+	return staticHTML{file: mFile, Category: mCategory}
+}
+
+// Name
+func (s staticHTML) Name() string {
+	return s.name
+}
+
+// SetName
+func (s staticHTML) SetName() string {
+	return s.name
+}
