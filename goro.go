@@ -25,23 +25,18 @@ func main() {
 	p := internal.Parser{EnabledTag: *enabledTag}
 	w := internal.Writer{}
 
-	log.Printf("[goro]: parse %s", *src)
 	f, err := p.Parse(*src)
 	if err != nil {
 		log.Fatalf("[goro]: failed to parse src: %s", err.Error())
 	}
 
-	log.Printf("[goro]: generate %s", *dst)
 	if err := w.Write(f, *dst); err != nil {
 		log.Fatalf("[goro]: failed to write file: %s", err.Error())
 	}
 
-	log.Printf("[goro]: format %s", *dst)
 	if err := format(); err != nil {
 		log.Fatalf("[goro]: failed to format file: %s", err.Error())
 	}
-
-	log.Print("[goro]: complete")
 }
 
 func format() error {
